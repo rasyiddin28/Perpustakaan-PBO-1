@@ -16,7 +16,8 @@ conn.execute(
 conn.execute(
     "CREATE TABLE IF NOT EXISTS Buku (IdBuku int primary key, Judul text, Penulis text, Kategori text)"
 )
-conn.execute("CREATE TABLE IF NOT EXISTS Peminjaman (IdPeminjaman int primary key, IdBuku int, IdAnggota int, IdPegawai int, Status text, TanggalKembali text)"
+conn.execute(
+    "CREATE TABLE IF NOT EXISTS Peminjaman (IdPeminjaman int primary key, IdBuku int, IdAnggota int, IdPegawai int, Status text, TanggalKembali text)"
 )
 
 #menutup koneksi
@@ -27,7 +28,8 @@ class Person :
         self.Nama = Nama
         self.NoTelepon = NoTelepon
         self.Alamat = Alamat
-    def get_Nama(self):
+    #getter
+    def get_Nama(self): 
         return self.Nama
     def get_NoTelepon(self):
         return self.NoTelepon
@@ -38,6 +40,7 @@ class Pegawai (Person) :
     def __init__(self, IdPegawai,Nama, NoTelepon, Alamat) :
         super().__init__(Nama, NoTelepon, Alamat)
         self.IdPegawai = IdPegawai
+    #getter
     def get_IdPegawai(self) :
         return self.IdPegawai
     def TambahPegawai(self):
@@ -129,7 +132,7 @@ class Peminjaman :
         else :
             print ("Terimakasih")
     def CatatPengembalian(self) :
-        idP = input ("Masukkan Id Peminjaman yang akan diubah statusnya : 1")
+        idP = input ("Masukkan Id Peminjaman yang akan diubah statusnya : ")
         conn.execute ("""UPDATE Peminjaman 
         SET Status='Selesai' 
         WHERE IdPeminjaman=idP """)
