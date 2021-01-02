@@ -122,9 +122,11 @@ class Peminjaman :
         while tambah != "N" :
             print ("------ Menambahkan Data Peminjaman------")
             Peminjaman1 = Peminjaman((input("Masukan Id Peminjaman : ")),(input("Masukan Id Buku : ")),(input("Masukan Id Anggota : ")),(input("Masukan Id Pegawai : ")),"Belum Selesai")
+            #Mengurangi Stok Buku di Tabel Buku
             conn.execute("""UPDATE Buku 
             SET Jumlah = Jumlah-1 
-            WHERE IdBuku = 'Peminjaman1.IdBuku' """)
+            WHERE IdBuku = ?""",(Peminjaman1.IdPeminjaman, ))
+            #memasukkan data ke database
             conn.execute("insert into Peminjaman values (?,?,?,?,?,?)", (Peminjaman1.IdPeminjaman, Peminjaman1.IdBuku, Peminjaman1.IdAnggota, Peminjaman1.IdPegawai, "Belum Selesai",(datetime.datetime.now() + datetime.timedelta(days=7)) ))
             conn.commit()
             print("Peminjaman dengan ID ", Peminjaman1.IdPeminjaman, "Telah Ditambahkan")
@@ -133,9 +135,14 @@ class Peminjaman :
             print ("Terimakasih")
     def CatatPengembalian(self) :
         idP = input ("Masukkan Id Peminjaman yang akan diubah statusnya : ")
+        #Mengubah Status Peminjaman
         conn.execute ("""UPDATE Peminjaman 
         SET Status='Selesai' 
-        WHERE IdPeminjaman=idP """)
+        WHERE IdPeminjaman=?""",(idP, ))
+        #Menambah Ulang Stok Buku
+        conn.execute("""UPDATE Buku 
+        SET Jumlah = Jumlah+1
+        WHERE IdPeminjaman=?""",(idP, ))
         conn.commit()
 
 
