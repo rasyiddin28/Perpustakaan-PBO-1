@@ -125,7 +125,7 @@ class Peminjaman :
             #Mengurangi Stok Buku di Tabel Buku
             conn.execute("""UPDATE Buku 
             SET Jumlah = Jumlah-1 
-            WHERE IdBuku = ?""",(Peminjaman1.IdPeminjaman, ))
+            WHERE IdBuku = ?""",(Peminjaman1.IdBuku, ))
             #memasukkan data ke database
             conn.execute("insert into Peminjaman values (?,?,?,?,?,?)", (Peminjaman1.IdPeminjaman, Peminjaman1.IdBuku, Peminjaman1.IdAnggota, Peminjaman1.IdPegawai, "Belum Selesai",(datetime.datetime.now() + datetime.timedelta(days=7)) ))
             conn.commit()
@@ -135,14 +135,17 @@ class Peminjaman :
             print ("Terimakasih")
     def CatatPengembalian(self) :
         idP = input ("Masukkan Id Peminjaman yang akan diubah statusnya : ")
+        idB = input ("Masukkan Id Buku yang dipinjam")
         #Mengubah Status Peminjaman
         conn.execute ("""UPDATE Peminjaman 
         SET Status='Selesai' 
         WHERE IdPeminjaman=?""",(idP, ))
+        print ("Status Peminjaman Diubah")
         #Menambah Ulang Stok Buku
-        conn.execute("""UPDATE Buku 
-        SET Jumlah = Jumlah+1
-        WHERE IdPeminjaman=?""",(idP, ))
+        conn.execute ("""UPDATE Buku 
+        SET Jumlah = Jumlah+1 
+        WHERE IdBuku=?""",(idB, ))
+        print ("Stok Buku telah ditambahkan ulang")
         conn.commit()
 
 
@@ -183,7 +186,7 @@ def menu():
             Peminjaman.CatatPengembalian(Peminjaman)
         
         elif user_input == 7:
-            print("Semoga Harimu menyenangkan")
+            print("Program Selesai, Semoga Harimu Menyenangkan")
 
 if __name__ == "__main__":
     menu()
