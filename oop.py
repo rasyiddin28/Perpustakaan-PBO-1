@@ -110,6 +110,17 @@ class Buku :
         for row in cursor :
             print (f'{row[0]}, {row[1]}, {row[2]}, {row[3]}, {row[4]}')
 
+    def ShowAllBook (self):
+        cursor = conn.cursor().execute("select * from Buku")
+        for row in cursor :
+            print (f'{row[0]}, {row[1]}, {row[2]}, {row[3]}, {row[4]}')
+
+    def SearchByJudul (self):
+        keyword = input ("Masukkan Kata Kunci Kategori : ")
+        cursor = conn.cursor().execute("select * from Buku where Judul = ?", (keyword, ))
+        for row in cursor :
+            print (f'{row[0]}, {row[1]}, {row[2]}, {row[3]}, {row[4]}')   
+
 class Peminjaman :
     def __init__(self, IdPeminjaman, IdBuku, IdAnggota, IdPegawai, Status):
         self.IdPeminjaman = IdPeminjaman
@@ -151,19 +162,21 @@ class Peminjaman :
 
 def menu():
 
-    print (""" ---Selamat Datang---
-    Masukkan angka dari menu yang anda pilih :
-    1. Menambah Data Buku
-    2. Mencari Buku Berdasarkan Kategori
-    3. Menambah Data Anggota
-    4. Menambah Data Pegawai
-    5. Mencatat Peminjaman
-    6. Mencatat Pengembalian
-    7. Exit Program""")
-    
     user_input = 0
 
-    while user_input != 7:
+    while user_input != 9:
+
+        print (""" ---Selamat Datang---
+        Masukkan angka dari menu yang anda pilih :
+        1. Menambah Data Buku
+        2. Menampilkan seluruh data buku
+        3. Mencari Buku Berdasarkan Judul
+        4. Mencari Buku Berdasarkan Kategori
+        5. Menambah Data Anggota
+        6. Menambah Data Pegawai
+        7. Mencatat Peminjaman
+        8. Mencatat Pengembalian
+        9. Exit Program""")
 
         user_input = int(input("Masukan Angka "))
 
@@ -171,21 +184,27 @@ def menu():
             Buku.TambahBuku(Buku)
 
         elif user_input == 2:
-            Buku.SearchByKategori(Buku)
+            Buku.ShowAllBook(Buku)
 
         elif user_input == 3:
-            Anggota.TambahAnggota(Anggota)
+            Buku.SearchByJudul(Buku)
 
         elif user_input == 4:
-            Pegawai.TambahPegawai(Pegawai)
+            Buku.SearchByKategori(Buku)
 
         elif user_input == 5:
-            Peminjaman.CatatPeminjaman(Peminjaman)
+            Anggota.TambahAnggota(Anggota)
 
         elif user_input == 6:
+            Pegawai.TambahPegawai(Pegawai)
+
+        elif user_input == 7:
+            Peminjaman.CatatPeminjaman(Peminjaman)
+
+        elif user_input == 8:
             Peminjaman.CatatPengembalian(Peminjaman)
         
-        elif user_input == 7:
+        elif user_input == 9:
             print("Program Selesai, Semoga Harimu Menyenangkan")
 
 if __name__ == "__main__":
